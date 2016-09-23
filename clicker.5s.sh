@@ -15,6 +15,11 @@ EOF)
 	echo $newURL > $FILE_WITH_URL
 }
 
+# JÄVLA SKIT VAD DÅLIGT.
+function getJsonVal () {
+	python -c "import sys, json; print json.load(sys.stdin)$1";
+}
+
 # If the first parameter to the script is "newURL" the prompt should be shown
 if [ "$1" == "newURL" ]; then
     getNewURL
@@ -29,12 +34,12 @@ if [ -z "$clickerurl" ]; then
 	echo "---"
 	echo "Add event URL | terminal=false bash=$0 param1=newURL"
 else
-	# Get HTML response from clicker
-	response=$(curl -s $clickerurl)
+	# Get json response from event
+	response=$(curl -s $clickerurl/get)
 
-	# Get the content of the <p id="count"> and eventname of <p id="name">
-	count=$(echo $response | sed -n 's/^.*<p.id="count">\([^<]*\).*/\1/p')
-	eventname=$(echo $response | sed -n 's/^.*<p.id="name">\([^<]*\).*/\1/p')
+	# Extract count and eventname from response
+	count=$(echo $response | getJsonVal "['count']")
+	eventname=$(echo $response | getJsonVal "['name']")
 
 	echo "$eventname: $count"
 	echo "---"

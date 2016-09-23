@@ -18,6 +18,10 @@ EOF)
 # If the first parameter to the script is "newURL" the prompt should be shown
 if [ "$1" == "newURL" ]; then
     getNewURL
+elif [ "$1" == "increment" ]; then
+    curl -X POST $clickerurl/increment
+elif [ "$1" == "decrement" ]; then
+    curl -X POST $clickerurl/decrement
 fi
 
 if [ -z "$clickerurl" ]; then
@@ -37,4 +41,6 @@ else
 	echo "Open in browser | href=$clickerurl"
 	# Show option to change clicker URL when holding down alt
 	echo "Change event URL | alternate=true terminal=false bash=$0 param1=newURL"
+	echo "△ Increment | color=green terminal=false bash=$0 param1=increment"
+	echo "▽ Decrement | color=red terminal=false bash=$0 param1=decrement"
 fi

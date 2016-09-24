@@ -8,11 +8,13 @@ fi
 # This one prompts the user for a URL using an Applescript dialog
 function getNewURL () {
 	newURL=$(/usr/bin/osascript << EOF
-set theString to text returned of (display dialog "Paste clicker URL:" default answer "" buttons {"Save","Cancel"} default button 1)
+set theString to text returned of (display dialog "Paste new clicker URL:" with title "Change event URL" default answer "" buttons {"Cancel", "Save"} default button 2 cancel button 1)
 EOF)
 
-	$clickerurl = $newURL
-	echo $newURL > $FILE_WITH_URL
+	if [ ! -z "$newURL" ]; then
+		$clickerurl = $newURL
+		echo $newURL > $FILE_WITH_URL
+	fi
 }
 
 # JÄVLA SKIT VAD DÅLIGT.
@@ -22,11 +24,11 @@ function getJsonVal () {
 
 # If the first parameter to the script is "newURL" the prompt should be shown
 if [ "$1" == "newURL" ]; then
-    getNewURL
+	getNewURL
 elif [ "$1" == "increment" ]; then
-    curl -X POST $clickerurl/increment
+	curl -X POST $clickerurl/increment
 elif [ "$1" == "decrement" ]; then
-    curl -X POST $clickerurl/decrement
+	curl -X POST $clickerurl/decrement
 fi
 
 if [ -z "$clickerurl" ]; then

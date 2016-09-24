@@ -39,15 +39,23 @@ else
 	# Get json response from event
 	response=$(curl -s $clickerurl/get)
 
-	# Extract count and eventname from response
-	count=$(echo $response | getJsonVal "['count']")
-	eventname=$(echo $response | getJsonVal "['name']")
+	if [[ -z "$response" || $response == {\"error\":*} ]]; then
+		# If response was empty or contained an error.
+		echo "Check connection/URL"
+		echo "---"
+		echo "URL: $clickerurl"
+		echo "Change event URL | terminal=false bash=$0 param1=newURL"
+	else
+		# Extract count and eventname from response
+		count=$(echo $response | getJsonVal "['count']")
+		eventname=$(echo $response | getJsonVal "['name']")
 
-	echo "$eventname: $count"
-	echo "---"
-	echo "Open in browser | href=$clickerurl"
-	# Show option to change clicker URL when holding down alt
-	echo "Change event URL | alternate=true terminal=false bash=$0 param1=newURL"
-	echo "△ Increment | color=green terminal=false bash=$0 param1=increment"
-	echo "▽ Decrement | color=red terminal=false bash=$0 param1=decrement"
+		echo "$eventname: $count"
+		echo "---"
+		echo "Open in browser | href=$clickerurl"
+		# Show option to change clicker URL when holding down alt
+		echo "Change event URL | alternate=true terminal=false bash=$0 param1=newURL"
+		echo "△ Increment | color=green terminal=false bash=$0 param1=increment"
+		echo "▽ Decrement | color=red terminal=false bash=$0 param1=decrement"
+	fi
 fi

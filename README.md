@@ -1,4 +1,4 @@
-# clicker-bitbar
+# bitbar-clicker
 Litet plugin till [BitBar](https://getbitbar.com) som visar status för ett clicker-event i menyraden på macOS.
 
 ![](screenshot.png)

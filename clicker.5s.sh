@@ -19,7 +19,7 @@ EOF)
 
 # JÄVLA SKIT VAD DÅLIGT.
 function getJsonVal () {
-	python -c "import sys, json; print json.load(sys.stdin)$1";
+	python -c "import sys, json; reload(sys); sys.setdefaultencoding('utf-8'); print json.load(sys.stdin)$1";
 }
 
 # If the first parameter to the script is "newURL" the prompt should be shown
